@@ -1,0 +1,59 @@
+version: '3'
+
+services:
+  sentry:
+    container_name: sentry
+    image: sentry
+    env_file:
+      - .env
+    ports:
+      - ${EXPOSED_SENTRY_PORT}:${SENTRY_PORT}
+    depends_on:
+      - postgres
+      - redis
+    volumes:
+      - ./data/sentry:/data
+
+  cron:
+    container_name: sentry-cron
+    image: sentry
+    command: run cron
+    env_file:
+      - .env
+    depends_on:
+      - sentry
+    volumes:
+      - ./data/sentry:/data
+
+  worker:
+    container_name: sentry-worker
+    image: sentry
+    environment:
+      C_FORCE_ROOT: 1
+    command: run worker
+    env_file:
+      - .env
+    depends_on:
+      - sentry
+    volumes:
+      - ./data/sentry:/data
+
+  redis:
+    container_name: sentry-redis
+    image: redis
+    command: redis-server --appendonly yes
+    volumes:
+      - ./data/redis:/data
+    ports:
+      - ${EXPOSED_REDIS_PORT}:${SENTRY_REDIS_PORT}
+
+  postgres:
+    container_name: sentry-postgres
+    image: postgres
+    environment:
+      POSTGRES_USER: ${SENTRY_DB_USER}
+      POSTGRES_PASSWORD: ${SENTRY_DB_PASSWORD}
+    volumes:
+      - ./data/postgres:/var/lib/postgresql/data
+    ports:
+      - ${EXPOSED_POSTGRES_PORT}:${SENTRY_POSTGRES_PORT}
