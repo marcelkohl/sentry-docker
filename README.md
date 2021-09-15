@@ -2,7 +2,7 @@
 Sentry using docker-compose
 
 ## Building
-- Copy the `.env.sample` to `.env` ***Don't worry about the secret key now, it will be generated later***
+- Copy the `.env.sample` to `.env` (*Don't worry about the secret key now, it will be generated later*)
 - Run `make init` from the root folder
 - Setup your `.env` file including the secret-key generated at the end of the ***make init*** process
 - Run `make start`
