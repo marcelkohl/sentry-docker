@@ -7,7 +7,7 @@ Sentry using docker-compose
 - Run `make init` from the root folder
 - Update your `.env` with the secret-key generated at the end of the ***make init*** process
 - Run `make start`
-- Access [http://localhost:9000](http://localhost:9000)
+- Access [http://localhost:19000](http://localhost:9000) (Port depends on your .env settings)
   - Defaults to login are:
     - user: **admin@admin.com**
     - password: **admin**
